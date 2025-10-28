@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 47</title>
+</head>
+<body>
+
+    <h2>Comparar dos horas</h2>
+
+    <form>
+        <label>Hora 1:</label><br>
+        <input type="number" id="h1" placeholder="Horas (0-23)" min="0" max="23">
+        <input type="number" id="m1" placeholder="Minutos (0-59)" min="0" max="59">
+        <br><br>
+
+        <label>Hora 2:</label><br>
+        <input type="number" id="h2" placeholder="Horas (0-23)" min="0" max="23">
+        <input type="number" id="m2" placeholder="Minutos (0-59)" min="0" max="59">
+        <br><br>
+
+        <button type="button" onclick="compararHoras()">Comparar</button>
+    </form>
+
+    <p id="salida"></p><p id="salida2"></p>
+
+    <script src="ej47.js"></script>
+</body>
+</html>

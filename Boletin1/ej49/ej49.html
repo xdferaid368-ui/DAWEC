@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Día Siguiente</title>
+</head>
+<body>
+    <h1>Calcular el día siguiente</h1>
+
+    <form id="fechaForm">
+        <label for="dia">Día:</label>
+        <input type="number" id="dia" min="1" max="31" required><br><br>
+
+        <label for="mes">Mes:</label>
+        <input type="number" id="mes" min="1" max="12" required><br><br>
+
+        <label for="anio">Año:</label>
+        <input type="number" id="anio" min="1" required><br><br>
+
+        <button type="button" onclick="calcularDiaSiguiente()">Calcular día siguiente</button>
+    </form>
+
+    <div id="salida" style="margin-top:20px; font-weight:bold;"></div>
+
+    <script src="ej49.js"></script>
+</body>
+</html>
