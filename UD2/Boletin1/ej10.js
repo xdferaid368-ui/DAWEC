@@ -15,3 +15,4 @@ document.addEventListener("mousedown", function(evento){
 document.addEventListener("contextmenu", function(event){
     event.preventDefault();
 })
+    
