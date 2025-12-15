@@ -1,0 +1,357 @@
+    Haz este examen de js que me dan objetos.js vacio un html que no hay que tocar y un codigo.js que llecaba varias cosas yo lo he tocado un poco si tienes que cambiar lo que sea cambialo
+
+    html:
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <title>Examen Unidad 1 - Oct25</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+        <script src="bootstrap/js/jquery.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <style type="text/css">
+        body {
+            margin-left: 10px;
+        }
+
+        form {
+            display: none;
+        }
+
+        #formularios {
+            margin-top: 60px;
+        }
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="#">Electrodomésticos - Examen Oct25</a>
+            </div>
+            <ul class="nav navbar-nav">
+            <li>
+                <a href="#" onclick="gestionFormularios('frmAltaCatalogo');">Alta Catálogo</a>
+            </li>
+            <li>
+                <a href="#" onclick="gestionFormularios('frmEntradaStock');">Entrada Stock</a>
+            </li>
+            <li>
+                <a href="#" onclick="gestionFormularios('frmSalidaStock');">Salida Stock</a>
+            </li>
+            <li>
+                <a href="#" onclick="mostrarListadoCatalogo();">Listado Catálogo</a>
+            </li>
+            <li>
+                <a href="#" onclick="mostrarListadoStock();">Listado Stock</a>
+            </li>
+            <li>
+                <a href="#" onclick="mostrarTotales();">Mostrar Totales</a>
+            </li>
+            </ul>
+        </div>
+        </nav>
+        <div class="container-fluid" id="formularios">
+        <form class="form-horizontal" name="frmAltaCatalogo" id="frmAltaCatalogo">
+            <fieldset>
+            <!-- Form Name -->
+            <legend>Alta de electrodoméstico</legend>
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="txtNombre">Nombre</label>
+                <div class="col-xs-4">
+                <input
+                    id="txtNombre"
+                    name="txtNombre"
+                    placeholder="Nombre"
+                    class="form-control input-md"
+                    type="text"
+                />
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="txtPrecio">Precio</label>
+                <div class="col-xs-4">
+                <input
+                    id="txtPrecio"
+                    name="txtPrecio"
+                    placeholder="Precio"
+                    class="form-control input-md"
+                    type="text"
+                />
+                </div>
+            </div>
+
+            <!-- Multiple Radios -->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="rbtElectrodomestico">Electrodoméstico</label>
+                <div class="col-xs-4">
+                <div class="radio">
+                    <input
+                    name="rbtElectrodomestico"
+                    id="rbtElectrodomestico-TV"
+                    value="TV"
+                    checked="checked"
+                    type="radio"
+                    />
+                    <label for="rbtElectrodomestico-TV">TV</label>
+                </div>
+                <div class="radio">
+                    <input
+                    name="rbtElectrodomestico"
+                    id="rbtElectrodomestico-LAV"
+                    value="LAV"
+                    checked="checked"
+                    type="radio"
+                    />
+                    <label for="rbtElectrodomestico-LAV">Lavadora</label>
+                </div>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="txtPulgadas">Pulgadas (TV)</label>
+                <div class="col-xs-4">
+                <input
+                    id="txtPulgadas"
+                    name="txtPulgadas"
+                    placeholder="Pulgadas"
+                    class="form-control input-md"
+                    type="text"
+                />
+                </div>
+            </div>
+
+            <!-- Multiple Radios -->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="rbtFullHD">Full HD (TV)</label>
+                <div class="col-xs-4">
+                <div class="radio">
+                    <input name="rbtFullHD" id="rbtFullHD-S" value="S" checked="checked" type="radio" />
+                    <label for="rbtFullHD-S">Si</label>
+                </div>
+                <div class="radio">
+                    <input name="rbtFullHD" id="rbtFullHD-N" value="N" checked="checked" type="radio" />
+                    <label for="rbtFullHD-N">No</label>
+                </div>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="txtCarga">Carga (LAV)</label>
+                <div class="col-xs-4">
+                <input
+                    id="txtCarga"
+                    name="txtCarga"
+                    placeholder="Carga"
+                    class="form-control input-md"
+                    type="text"
+                />
+                </div>
+            </div>
+
+            <!-- Input Button -->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="btnAceptarAltaCatalogo"></label>
+                <div class="col-xs-4">
+                <input
+                    type="button"
+                    id="btnAceptarAltaCatalogo"
+                    name="btnAceptarAltaCatalogo"
+                    class="btn btn-primary"
+                    value="Aceptar"
+                    onclick="aceptarAltaCatalogo();"
+                />
+                </div>
+            </div>
+            </fieldset>
+        </form>
+        <form class="form-horizontal" name="frmEntradaStock" id="frmEntradaStock">
+            <fieldset>
+            <!-- Form Name -->
+            <legend>Entrada de Stock</legend>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="txtNombre"
+                >Nombre del electrodoméstico</label
+                >
+                <div class="col-xs-4">
+                <input
+                    id="txtNombre"
+                    name="txtNombre"
+                    placeholder="Nombre"
+                    class="form-control input-md"
+                    type="text"
+                />
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="txtUnidades">Unidades añadidas</label>
+                <div class="col-xs-4">
+                <input
+                    id="txtUnidades"
+                    name="txtUnidades"
+                    placeholder="Unidades"
+                    class="form-control input-md"
+                    type="text"
+                />
+                </div>
+            </div>
+
+            <!-- Input Button -->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="btnAceptarEntradaStock"></label>
+                <div class="col-xs-4">
+                <input
+                    type="button"
+                    id="btnAceptarEntradaStock"
+                    name="btnAceptarEntradaStock"
+                    class="btn btn-primary"
+                    value="Aceptar"
+                    onclick="aceptarEntradaStock();"
+                />
+                </div>
+            </div>
+            </fieldset>
+        </form>
+
+        <form class="form-horizontal" name="frmSalidaStock" id="frmSalidaStock">
+            <fieldset>
+            <!-- Form Name -->
+            <legend>Salida de Stock</legend>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="txtNombre"
+                >Nombre del electrodoméstico</label
+                >
+                <div class="col-xs-4">
+                <input
+                    id="txtNombre"
+                    name="txtNombre"
+                    placeholder="Nombre"
+                    class="form-control input-md"
+                    type="text"
+                />
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="txtUnidades">Unidades eliminadas</label>
+                <div class="col-xs-4">
+                <input
+                    id="txtUnidades"
+                    name="txtUnidades"
+                    placeholder="Unidades"
+                    class="form-control input-md"
+                    type="text"
+                />
+                </div>
+            </div>
+
+            <!-- Input Button -->
+            <div class="form-group">
+                <label class="col-xs-4 control-label" for="btnAceptarSalidaStock"></label>
+                <div class="col-xs-4">
+                <input
+                    type="button"
+                    id="btnAceptarSalidaStock"
+                    name="btnAceptarSalidaStock"
+                    class="btn btn-primary"
+                    value="Aceptar"
+                    onclick="aceptarSalidaStock();"
+                />
+                </div>
+            </div>
+            </fieldset>
+        </form>
+        </div>
+        <script src="js/objetos.js"></script>
+        <script src="js/codigo.js"></script>
+    </body>
+    </html>
+
+
+    codigo.js
+    datosIniciales();
+
+    function datosIniciales() {}
+
+    // Gestión de formularios
+    function gestionFormularios(sFormularioVisible) {
+    ocultarTodosLosFormularios();
+
+    // Hacemos visible el formulario que llega como parámetro
+    switch (sFormularioVisible) {
+        case "frmAltaCatalogo":
+        frmAltaCatalogo.style.display = "block";
+        break;
+        case "frmEntradaStock":
+        frmEntradaStock.style.display = "block";
+        break;
+        case "frmSalidaStock":
+        frmSalidaStock.style.display = "block";
+        break;
+    }
+    }
+
+    function ocultarTodosLosFormularios() {
+    let oFormularios = document.querySelectorAll("form");
+
+    for (let i = 0; i < oFormularios.length; i++) {
+        oFormularios[i].style.display = "none";
+    }
+    }
+
+    function aceptarAltaProducto() {
+        let nombre = document.getElementById("txtNombre").value;
+        let precio = parseFloat(document.getElementById("txtPrecio").value);
+
+        let Electrodomestico;
+        if(nombre === "televisor"){
+            let pulgadas = parseInt(document.getElementById("txtPulgadas").value);
+            let fullHD = document.getElementById("chkfullHD").checked;
+            Electrodomestico = new Televisor(codigo, precio, nombre, pulgadas, smart);
+        } else {
+            let carga = parseInt(document.getElementById("txtcarga").value);
+            Electrodomestico = new Lavadora( precio, nombre, carga );
+        }
+    }
+
+    function aceptarEntradaStock() {
+    // Añadir código
+    }
+
+    function aceptarSalidaStock() {
+    // Añadir código
+    }
+
+    function mostrarListadoCatalogo(listadoTelevisores, listadolavadoras){
+        listadolavadoras(carga);
+        listadoTelevisores(minPulgadas);
+
+    }
+
+    function mostrarListadoStock() {
+    // Añadir código
+    }
+
+    function mostrarTotales() {
+    // Añadir código
+    }
+
+
+
+    Hazme Objeto.js y codigo .js bien USANDO COSAS BASICAS como si lo hubiera hecho alguien que tampoco controla mucho  MUY ATENTO EN LO DE HACERLO COMtamO LO HARIA ALGUIEN QUE NO SABRIA mucho
+    pon alguna cosa que esteticamente como se escribe no esta bien o olvidate de algun ;  Y NO PONGAS COMENTARIOS haz el examen como para sacar un 6-7
+    No te lies diciendome cosas ponme el codigo YA MISMO CORRE
