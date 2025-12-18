@@ -91,3 +91,178 @@ function cargaDatosIniciales() {
   catalogo.addProducto(15, "Salsa Alioli 350 gr (Caja de 50)", 113.75, 2);
   catalogo.addProducto(16, "Salsa Barbacoa 500gr (Caja de 30)", 67.5, 2);
 }
+cargaDatosIniciales();
+
+gestor.comerciales = comerciales;
+gestor.categorias = categorias;
+gestor.comercialActual = 0;
+gestor.clienteActual = 0;
+
+gestor.clientes = [];
+gestor.pedidos = [];
+
+for (let i = 0; i < clientes.length; i++) {
+  gestor.clientes[i] = [];
+  gestor.pedidos[i] = [];
+  for (let j = 0; j < clientes[i].length; j++) {
+    gestor.clientes[i][j] = new Cliente(clientes[i][j]);
+    gestor.pedidos[i][j] = [];
+  }
+}
+
+const selComerciales = document.frmComercial.comerciales;
+const selCategorias = document.frmControles.categorias;
+const selProductos = document.frmControles.productos;
+const panelClientes = document.getElementById("clientes");
+const panelPedido = document.getElementById("pedido");
+const teclas = document.querySelectorAll(".tecla");
+
+function cargarComerciales() {
+  selComerciales.innerHTML = "";
+  for (let i = 0; i < gestor.comerciales.length; i++) {
+    let opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = gestor.comerciales[i];
+    selComerciales.appendChild(opt);
+  }
+}
+
+function cargarCategorias() {
+  selCategorias.innerHTML = "";
+  for (let i = 0; i < gestor.categorias.length; i++) {
+    let opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = gestor.categorias[i];
+    selCategorias.appendChild(opt);
+  }
+}
+
+function cargarProductos() {
+  selProductos.innerHTML = "";
+  let cat = selCategorias.value;
+  for (let p of catalogo.productos) {
+    if (p.idCategoria == cat) {
+      let opt = document.createElement("option");
+      opt.value = p.idProducto;
+      opt.textContent = p.nombreProducto;
+      selProductos.appendChild(opt);
+    }
+  }
+}
+
+function pintarClientes() {
+  let divs = panelClientes.querySelectorAll(".cliente");
+  divs.forEach(d => d.remove());
+
+  let lista = gestor.clientes[gestor.comercialActual];
+
+  for (let i = 0; i < lista.length; i++) {
+    let div = document.createElement("div");
+    div.textContent = lista[i].nombre;
+    div.className = "cliente " + (lista[i].cuentaAbierta ? "pendiente" : "pagado");
+    div.onclick = function () {
+      gestor.clienteActual = i;
+      pintarClientes();
+      pintarPedido();
+    };
+    panelClientes.appendChild(div);
+  }
+}
+
+function pintarPedido() {
+  panelPedido.innerHTML = "";
+  let cliente = gestor.clientes[gestor.comercialActual][gestor.clienteActual];
+  let pedido = gestor.pedidos[gestor.comercialActual][gestor.clienteActual];
+
+  let h = document.createElement("h3");
+  h.textContent = cliente.nombre;
+  panelPedido.appendChild(h);
+
+  if (pedido.length == 0) return;
+
+  let total = 0;
+
+  for (let i = 0; i < pedido.length; i++) {
+    let prod = catalogo.productos.find(p => p.idProducto == pedido[i].idProducto);
+    let div = document.createElement("div");
+    let importe = prod.precioUnidad * pedido[i].unidades;
+    total += importe;
+
+    let btnMas = document.createElement("button");
+    btnMas.textContent = "+";
+    btnMas.onclick = function () {
+      pedido[i].unidades++;
+      pintarPedido();
+    };
+
+    let btnMenos = document.createElement("button");
+    btnMenos.textContent = "-";
+    btnMenos.onclick = function () {
+      if (pedido[i].unidades == 1) {
+        if (confirm("Eliminar producto")) {
+          pedido.splice(i, 1);
+          if (pedido.length == 0) cliente.cuentaAbierta = false;
+        }
+      } else {
+        pedido[i].unidades--;
+      }
+      pintarClientes();
+      pintarPedido();
+    };
+
+    div.textContent = prod.nombreProducto + " x " + pedido[i].unidades + " = " + importe.toFixed(2);
+    div.appendChild(btnMas);
+    div.appendChild(btnMenos);
+    panelPedido.appendChild(div);
+  }
+
+  let t = document.createElement("h3");
+  t.textContent = "Total: " + total.toFixed(2);
+  panelPedido.appendChild(t);
+
+  let fin = document.createElement("button");
+  fin.textContent = "PEDIDO ENVIADO Y COBRADO";
+  fin.onclick = function () {
+    pedido.length = 0;
+    cliente.cuentaAbierta = false;
+    pintarClientes();
+    pintarPedido();
+  };
+  panelPedido.appendChild(fin);
+}
+
+selComerciales.onchange = function () {
+  gestor.comercialActual = this.value;
+  gestor.clienteActual = 0;
+  pintarClientes();
+  pintarPedido();
+};
+
+selCategorias.onchange = cargarProductos;
+
+teclas.forEach(t => {
+  t.onclick = function () {
+    let unidades = parseInt(this.value);
+    let idProd = parseInt(selProductos.value);
+    let pedido = gestor.pedidos[gestor.comercialActual][gestor.clienteActual];
+    let cliente = gestor.clientes[gestor.comercialActual][gestor.clienteActual];
+
+    for (let l of pedido) {
+      if (l.idProducto == idProd) {
+        alert("Producto ya añadido");
+        return;
+      }
+    }
+
+    pedido.push(new LineaPedido(unidades, idProd));
+    cliente.cuentaAbierta = true;
+    pintarClientes();
+    pintarPedido();
+  };
+});
+
+cargarComerciales();
+cargarCategorias();
+cargarProductos();
+pintarClientes();
+pintarPedido();
