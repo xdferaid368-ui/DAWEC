@@ -53,7 +53,6 @@ function toggleCheckbox() {
 }
 
 boton.addEventListener('click', toggleCheckbox);
-
 // Para eliminar el manejador:
 boton.removeEventListener('click', toggleCheckbox);
 Eventos del ratón y teclado
@@ -137,7 +136,7 @@ tabla.appendChild(tr);
 Reordenar listas o tablas (ejemplo para listas):
 
 js
-Copiar código
+
 // Transformar lista en array para ordenar
 let items = Array.from(lista.children);
 items.sort((a,b) => a.textContent.localeCompare(b.textContent));
@@ -147,7 +146,7 @@ Añadir filas con numeración y borrar filas
 Añadir fila y asignar número automático:
 
 js
-Copiar código
+
 function addRow(texto) {
   const tr = document.createElement('tr');
   const tdNum = document.createElement('td');
@@ -318,6 +317,7 @@ js
 Copiar código
 document.createElement('tag')
 parent.appendChild(child)
+
 Clonar:
 
 js
@@ -674,3 +674,444 @@ btnBorrar.addEventListener('click', () => {
   document.cookie = `${clave.value}=; path=/; max-age=0`;
   alert('Cookie borrada');
 });
+
+# 🧠 Expresiones Regulares (Regex) – Explicación completa para DWEC
+
+Las **expresiones regulares** son patrones que permiten **validar**, **buscar** o **filtrar** texto.  
+En DWEC se usan sobre todo para:
+
+- Validar formularios
+- Controlar formatos de entrada
+- Evitar datos incorrectos antes de enviar un formulario
+
+En JavaScript se usan principalmente con:
+- `regex.test(cadena)`
+- `cadena.match(regex)`
+
+---
+
+## 📌 1. Estructura básica de una expresión regular
+
+```js
+const regex = /patrón/;
+Ejemplo:
+
+js
+Copiar código
+const regex = /^[A-Z]+$/;
+Significa:
+
+“Solo letras mayúsculas, desde el inicio hasta el final del texto”.
+
+📌 2. Anclas: inicio y fin del texto
+Símbolo	Significado
+^	Inicio del texto
+$	Fin del texto
+
+Ejemplo
+js
+
+/^\d+$/
+✔ Válido: 12345
+❌ No válido: 123a5
+
+👉 Sin ^ y $ la regex puede validar solo una parte, lo que suele provocar errores en examen.
+
+📌 3. Clases de caracteres
+Letras y números
+Expresión	Significado
+[a-z]	Letras minúsculas
+[A-Z]	Letras mayúsculas
+[0-9] o \d	Dígitos
+\w	Letras, números y _
+\s	Espacios en blanco
+
+Ejemplo
+js
+
+/^[A-Za-z]+$/
+✔ Juan
+❌ Juan1
+
+📌 4. Cuantificadores (CUÁNTAS veces)
+Símbolo	Significado
++	Una o más veces
+*	Cero o más
+?	Cero o una
+{n}	Exactamente n
+{n,m}	Entre n y m
+
+Ejemplo
+js
+Copiar código
+/^\d{9}$/
+✔ 612345678
+❌ 61234
+
+📌 5. Grupos y repetición
+Los paréntesis permiten agrupar partes del patrón.
+
+js
+Copiar código
+([A-Z][a-z]+)
+Un grupo que representa:
+
+Una mayúscula
+
+Varias minúsculas
+
+Ejemplo (nombre con apellidos)
+js
+
+/^[A-Z][a-z]+( [A-Z][a-z]+)*$/
+✔ Juan Pérez López
+❌ juan Pérez
+
+📌 6. Alternativas (OR)
+El símbolo | funciona como o.
+
+js
+
+/^(hombre|mujer)$/
+✔ hombre
+✔ mujer
+❌ otro
+
+📌 7. Caracteres especiales escapados
+Algunos caracteres tienen significado especial y deben escaparse con \.
+
+Carácter	Cómo usarlo
+.	\.
+/	\/
++	\+
+(	\(
+
+Ejemplo (email)
+js
+Copiar código
+/^[a-z]+@[a-z]+\.[a-z]{2,4}$/
+📌 8. Lookahead (muy importante)
+Sirve para exigir que algo exista, sin importar dónde.
+
+js
+
+(?=.*[A-Z])
+Ejemplo contraseña segura
+js
+Copiar código
+/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/
+✔ Al menos:
+
+Una mayúscula
+
+Una minúscula
+
+Un número
+
+8 caracteres
+
+📌 9. Uso REAL en JavaScript (DWEC)
+Validar un input
+js
+
+const regexDNI = /^\d{7,8}[A-Z]$/;
+
+if (!regexDNI.test(dni.value.trim())) {
+  alert('DNI incorrecto');
+}
+Validar formulario completo
+js
+Copiar código
+form.addEventListener('submit', e => {
+  e.preventDefault();
+
+  let errores = [];
+
+  if (!regexNombre.test(nombre.value)) errores.push('Nombre');
+  if (!regexEmail.test(email.value)) errores.push('Email');
+
+  if (errores.length > 0) {
+    alert('Errores en:\n' + errores.join('\n'));
+  } else {
+    form.submit();
+  }
+});
+📌 10. Regex típicas de examen DWEC
+Campo	Regex
+Nombre	^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+( [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$
+DNI	^\d{7,8}[A-Z]$
+Fecha	`^(0[1-9]
+Teléfono	^[6789]\d{8}$
+Email	^[a-z0-9._-]+@[a-z0-9_-]+\.[a-z]{2,4}$
+Usuario	^[a-z][a-z0-9]{6}\d{3}$
+
+⚠️ Errores comunes en examen
+❌ No usar ^ y $
+❌ Validar solo con regex sin trim()
+❌ Usar .match() cuando solo necesitas .test()
+❌ No mostrar mensajes claros
+❌ Pensar que regex valida lógica (fechas reales, DNI correcto…)
+
+🧠 Regla de oro DWEC
+Regex valida FORMA, JavaScript valida LÓGICA
+
+🚀 Resumen ultra rápido
+js
+Copiar código
+regex.test(valor)        // validar
+^ y $                    // inicio y fin
++ * ? {n}                // cantidad
+()                       // grupos
+|                        // OR
+(?=...)                  // exigir condición
+
+## 🔎 Ejercicios extra de Expresiones Regulares (DWEC)
+
+---
+
+### Ejercicio 5.2 – Validar nombre y apellidos (mayúsculas obligatorias)
+
+**Enunciado:**  
+Validar un campo que permita:
+- Una o más palabras
+- Cada palabra debe empezar por mayúscula
+- El resto en minúscula
+- Separadas por un solo espacio
+
+✔ Válidos:
+- Juan
+- Juan Pérez
+- María del Carmen ❌ (NO, "del" no empieza por mayúscula)
+
+**Regex:**
+
+```js
+const regexNombre = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+( [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$/;
+Explicación:
+
+^ → inicio del texto
+
+[A-ZÁÉÍÓÚÑ] → primera letra en mayúscula
+
+[a-záéíóúñ]+ → resto en minúsculas
+
+( ... )* → permite repetir el patrón (para apellidos)
+
+Espacio obligatorio antes de cada nueva palabra
+
+$ → fin del texto
+
+Ejemplo JS:
+
+js
+Copiar código
+if (!regexNombre.test(nombre.value)) {
+  alert('Nombre mal formado');
+}
+Ejercicio 5.3 – Validar contraseña segura
+Enunciado:
+La contraseña debe tener:
+
+Mínimo 8 caracteres
+
+Al menos una mayúscula
+
+Al menos una minúscula
+
+Al menos un número
+
+Regex:
+
+js
+const regexPass = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
+Explicación:
+
+(?=.*[A-Z]) → debe existir al menos una mayúscula
+
+(?=.*[a-z]) → debe existir al menos una minúscula
+
+(?=.*\d) → debe existir al menos un número
+
+.{8,} → mínimo 8 caracteres
+
+No importa el orden
+
+Ejemplo JS:
+
+js
+
+if (!regexPass.test(password.value)) {
+  alert('Contraseña insegura');
+}
+Ejercicio 5.4 – Validar código postal español
+Enunciado:
+Código postal válido:
+
+5 dígitos
+
+Empieza entre 01 y 52
+
+Regex:
+
+js
+Copiar código
+const regexCP = /^(0[1-9]|[1-4]\d|5[0-2])\d{3}$/;
+Explicación:
+
+(0[1-9]) → 01 a 09
+
+([1-4]\d) → 10 a 49
+
+(5[0-2]) → 50 a 52
+
+\d{3} → últimos 3 dígitos
+
+Total = 5 cifras
+
+Ejercicio 5.5 – Validar número de teléfono con o sin prefijo
+Enunciado:
+Teléfono válido:
+
+Empieza por 6, 7, 8 o 9
+
+Puede llevar prefijo +34 opcional
+
+✔ Válidos:
+
+612345678
+
++34612345678
+
+Regex:
+
+js
+Copiar código
+const regexTel = /^(\+34)?[6789]\d{8}$/;
+Explicación:
+
+(\+34)? → prefijo opcional
+
+[6789] → primer dígito válido
+
+\d{8} → resto del número
+
+Ejercicio 5.6 – Validar fecha real (DD/MM/AAAA)
+Enunciado:
+Validar formato y días reales (NO 32/01/2024).
+
+Regex:
+
+js
+Copiar código
+const regexFecha = /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+Explicación:
+
+Día:
+
+0[1-9] → 01–09
+
+[12]\d → 10–29
+
+3[01] → 30–31
+
+Mes:
+
+0[1-9] → 01–09
+
+1[0-2] → 10–12
+
+Año:
+
+\d{4} → 4 cifras
+
+⚠ No controla meses con 30 días ni febrero (eso sería con JS adicional).
+
+Ejercicio 5.7 – Validar usuario (login)
+Enunciado:
+Usuario válido:
+
+5 a 12 caracteres
+
+Letras y números
+
+No puede empezar por número
+
+Regex:
+
+js
+Copiar código
+const regexUser = /^[A-Za-z][A-Za-z0-9]{4,11}$/;
+Explicación:
+
+[A-Za-z] → primera letra obligatoria
+
+{4,11} → resto hasta llegar a 5–12 caracteres
+
+No permite símbolos
+
+Ejercicio 5.8 – Validar matrícula española moderna
+Enunciado:
+Formato:
+
+4 números
+
+3 letras (sin vocales)
+
+Ejemplo: 1234BCD
+
+Regex:
+
+js
+Copiar código
+const regexMatricula = /^\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}$/;
+Explicación:
+
+\d{4} → cuatro números
+
+Letras sin vocales para evitar palabras
+
+{3} → tres letras exactas
+
+Ejercicio 5.9 – Validar cuenta bancaria simple (IBAN ES)
+Enunciado:
+Formato IBAN español:
+
+Empieza por ES
+
+2 dígitos de control
+
+20 números más
+
+Regex:
+
+js
+Copiar código
+const regexIBAN = /^ES\d{22}$/;
+Explicación:
+
+ES → literal
+
+\d{22} → 22 números obligatorios
+
+No valida matemáticamente, solo formato
+
+Ejercicio 5.10 – Validación combinada (ejercicio típico de examen)
+Enunciado:
+Formulario con nombre, DNI y teléfono.
+Mostrar errores acumulados.
+
+JavaScript:
+
+js
+Copiar código
+let errores = [];
+
+if (!regexNombre.test(nombre.value)) errores.push('Nombre incorrecto');
+if (!regexDNI.test(dni.value)) errores.push('DNI incorrecto');
+if (!regexTel.test(telefono.value)) errores.push('Teléfono incorrecto');
+
+if (errores.length > 0) {
+  alert(errores.join('\n'));
+} else {
+  alert('Formulario válido');
+}

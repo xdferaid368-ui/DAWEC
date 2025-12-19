@@ -15,6 +15,7 @@ window.onload = function () {
     });
   });
 
+
   // Botón para mover
   document.getElementById("mover").addEventListener("click", function () {
 
